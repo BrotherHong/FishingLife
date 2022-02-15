@@ -26,12 +26,6 @@ public class FishingArea {
         return true;
     }
 
-    public boolean isSelectionAccepted() {
-        if (selection == null)
-            return true;
-        return (selection.getBlockOne() == null || selection.getBlockTwo() == null);
-    }
-
     public static boolean isConflict(FishingArea area1, FishingArea area2) {
         if (area1 == null || area2 == null) return false;
 

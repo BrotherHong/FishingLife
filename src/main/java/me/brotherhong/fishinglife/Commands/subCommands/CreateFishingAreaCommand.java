@@ -38,7 +38,7 @@ public class CreateFishingAreaCommand extends SubCommand {
 		FishingArea fishingArea = new FishingArea();
 		fishingArea.setSelection(FishingLife.getPlayerSelection(player));
 		
-		if (fishingArea.isSelectionAccepted()) {
+		if (!fishingArea.getSelection().isReady()) {
 			player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("no-select")));
 			return;
 		}

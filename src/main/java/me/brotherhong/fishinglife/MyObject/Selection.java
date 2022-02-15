@@ -2,7 +2,7 @@ package me.brotherhong.fishinglife.MyObject;
 
 import org.bukkit.util.BlockVector;
 
-public class Selection {
+public class Selection implements Cloneable {
 	private BlockVector blockOne = null;
 	private BlockVector blockTwo = null;
 	
@@ -23,6 +23,10 @@ public class Selection {
 		this.blockTwo = newTwo;
 	}
 
+	public boolean isReady() {
+		return (blockOne != null && blockTwo != null);
+	}
+
 	public BlockVector getBlockOne() {
 		return blockOne;
 	}
@@ -38,7 +42,14 @@ public class Selection {
 	public void setBlockTwo(BlockVector blockTwo) {
 		this.blockTwo = blockTwo;
 	}
-	
-	
-	
+
+	@Override
+	public Selection clone() {
+		try {
+			return (Selection) super.clone();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

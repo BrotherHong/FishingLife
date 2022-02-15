@@ -45,7 +45,7 @@ public class FishingLife extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ToolClickListener(), this);
 		getServer().getPluginManager().registerEvents(new MenuListener(), this);
 		getServer().getPluginManager().registerEvents(new ModifyWeightListener(), this);
-        getCommand("fishinglife").setExecutor(new CommandManager());
+		getCommand("fishinglife").setExecutor(new CommandManager());
 		
 		prefix = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(lang.getConfig().getString("prefix")));
 		maxLine = config.getConfig().getInt("size");
