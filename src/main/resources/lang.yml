@@ -1,0 +1,35 @@
+# 插件前綴
+prefix: "&f[&bFishing&cLife&f] "
+
+# 警示訊息
+unknown-command: "&c未知的指令，嘗試/fl help"
+selection-tool: "&a圈選工具已出現在你的背包裡"
+no-select: "&c在建立前必須先框選"
+area-conflict: "&c此框選區域和其他存在的區域衝突"
+same-name: "&c已有存在相同名字的區域"
+not-found: "&c該區域不存在"
+no-item: "&c手上必須拿著目標物品"
+no-drops: "&c此區域沒有任何掉落物"
+same-drops: "&c已存在相同的掉落物"
+list-area: "&b目前存在 &f%area_amount% &b個釣魚區域"
+only-integer: "&c必須輸入正整數值"
+drop-overflow: "&c此釣魚區域的掉落物已滿!"
+no-permission: "&c你沒有權限這樣做"
+
+# 提示訊息
+cancel-modify: "&c取消修改"
+cancel-delete: "&c取消刪除"
+successful-delete: "&c成功刪除"
+successful-add: "&a成功新增掉落物"
+successful-create: "&a成功建立新的釣魚區域 &b%area_name%"
+fish-caught: "&a你釣到了 %fish% &bx %amount%"
+
+# 權重修改
+new-weight-request: "&a請輸入新的權重&f、&c輸入 - 取消"
+new-weight-set: "&a新的&6權重&a已設置完成"
+
+# 展示
+weight-display: "&6權重: &f%weight%"
+chance-display: "&b機率: &f%chance%&b%"
+change-weight-hint: "&a左鍵修改權重"
+delete-hint: "&c右鍵刪除"

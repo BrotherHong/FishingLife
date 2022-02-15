@@ -1,0 +1,20 @@
+name: FishingLife
+version: '${project.version}'
+main: me.brotherhong.fishinglife.FishingLife
+api-version: 1.18
+authors: [ BrotherHong ]
+
+commands:
+  fishinglife:
+    aliases: [fl]
+
+permissions:
+  fishinglife.show:
+    description: Allows you to open the drop list of specific fishing area.
+    default: true
+
+  fishinglife.op:
+    description: Allows you to use all the commands of this plugin.
+    default: op
+    children:
+      fishinglife.show: true
