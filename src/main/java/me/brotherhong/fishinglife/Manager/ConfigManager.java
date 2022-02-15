@@ -18,8 +18,8 @@ public class ConfigManager {
 	private File configFile = null;
 	private String fileName = null;
 	
-	public ConfigManager(FishingLife plugin, String fileName) {
-		this.plugin = plugin;
+	public ConfigManager(String fileName) {
+		this.plugin = FishingLife.getPlugin();
 		this.fileName = fileName;
 		// save / initializing the config
 		saveDefaultConfig();

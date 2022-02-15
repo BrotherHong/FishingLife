@@ -13,10 +13,6 @@ import me.brotherhong.fishinglife.MyObject.FishingDrop;
 
 public class AddFishingDropsCommand extends SubCommand {
 
-	public AddFishingDropsCommand(FishingLife plugin) {
-		super(plugin);
-	}
-
 	@Override
 	public String getName() {
 		return "addItem";

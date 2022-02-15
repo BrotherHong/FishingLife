@@ -10,10 +10,6 @@ import me.brotherhong.fishinglife.Commands.SubCommand;
 
 public class ToolCommand extends SubCommand {
 
-	public ToolCommand(FishingLife plugin) {
-		super(plugin);
-	}
-
 	@Override
 	public String getName() {
 		return "tool";

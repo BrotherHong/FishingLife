@@ -20,41 +20,48 @@ import me.brotherhong.fishinglife.MyObject.Selection;
 
 public class FishingLife extends JavaPlugin {
 	
-	private final ConfigManager config = new ConfigManager(this, "config.yml");
-	private final ConfigManager lang = new ConfigManager(this, "lang.yml");
-	private final ConfigManager area = new ConfigManager(this, "area.yml");
+	private ConfigManager config;
+	private ConfigManager lang;
+	private ConfigManager area;
 	private static final HashMap<Player, Selection> playerSelectionMap = new HashMap<>();
 	private static final HashMap<Player, PlayerMenuUtility> playerMenuUtilityMap = new HashMap<>();
 	private static String prefix;
 	private static int maxLine;
-	
+	private static FishingLife plugin;
+
 	static {
 		ConfigurationSerialization.registerClass(FishingDrop.class);
 	}
 	
 	@Override
 	public void onEnable() {
-		getServer().getPluginManager().registerEvents(new FishCaughtListener(this), this);
-		getServer().getPluginManager().registerEvents(new ToolClickListener(this), this);
-		getServer().getPluginManager().registerEvents(new MenuListener(this), this);
-		getServer().getPluginManager().registerEvents(new ModifyWeightListener(this), this);
-        getCommand("fishinglife").setExecutor(new CommandManager(this));
+		plugin = this;
+
+		config = new ConfigManager("config.yml");
+		lang = new ConfigManager("lang.yml");
+		area = new ConfigManager("area.yml");
+
+		getServer().getPluginManager().registerEvents(new FishCaughtListener(), this);
+		getServer().getPluginManager().registerEvents(new ToolClickListener(), this);
+		getServer().getPluginManager().registerEvents(new MenuListener(), this);
+		getServer().getPluginManager().registerEvents(new ModifyWeightListener(), this);
+        getCommand("fishinglife").setExecutor(new CommandManager());
 		
 		prefix = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(lang.getConfig().getString("prefix")));
 		maxLine = config.getConfig().getInt("size");
-	}
-	
-	public static String getPrefix() {
-		return prefix;
-	}
-	
-	public static int getMaxSize() {
-		return maxLine * 9;
 	}
 
 	@Override
 	public void onDisable() {
 		
+	}
+
+	public static String getPrefix() {
+		return prefix;
+	}
+
+	public static int getMaxSize() {
+		return maxLine * 9;
 	}
 	
 	public static Selection getPlayerSelection(Player player) {
@@ -83,6 +90,10 @@ public class FishingLife extends JavaPlugin {
 	
 	public ConfigManager getAreaConfig() {
 		return this.area;
+	}
+
+	public static FishingLife getPlugin() {
+		return plugin;
 	}
 }
 

@@ -1,5 +1,6 @@
 package me.brotherhong.fishinglife.Commands.subCommands;
 
+import me.brotherhong.fishinglife.MyObject.FishingArea;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockVector;
@@ -9,10 +10,6 @@ import me.brotherhong.fishinglife.Commands.SubCommand;
 import me.brotherhong.fishinglife.MyObject.Selection;
 
 public class CreateFishingAreaCommand extends SubCommand {
-
-	public CreateFishingAreaCommand(FishingLife plugin) {
-		super(plugin);
-	}
 
 	@Override
 	public String getName() {
@@ -38,97 +35,39 @@ public class CreateFishingAreaCommand extends SubCommand {
 		}
 		
 		String areaName = args[1];
-		String path = "selected-area." + areaName;
+		FishingArea fishingArea = new FishingArea();
+		fishingArea.setSelection(FishingLife.getPlayerSelection(player));
 		
-		Selection pSel = FishingLife.getPlayerSelection(player);
-		pSel.sort();
-		BlockVector one = pSel.getBlockOne();
-		BlockVector two = pSel.getBlockTwo();
-		
-//		System.out.println(one.toString());
-//		System.out.println(two.toString());
-		
-		if (one == null || two == null) {
+		if (fishingArea.isSelectionAccepted()) {
 			player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("no-select")));
 			return;
 		}
-		
-		if (isAreaConflict(pSel)) {
-			player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("area-conflict")));
-			return;
+
+		FishingArea checkedArea = new FishingArea();
+		for (String name : area.getConfig().getConfigurationSection("selected-area").getKeys(false)) {
+
+			Selection checkedSelection = new Selection();
+			checkedSelection.setBlockOne(area.getConfig().getVector("selected-area." + name + ".starting-point").toBlockVector());
+			checkedSelection.setBlockTwo(area.getConfig().getVector("selected-area." + name + ".ending-point").toBlockVector());
+
+			checkedArea.setSelection(checkedSelection);
+
+			if (FishingArea.isConflict(fishingArea, checkedArea)) {
+				player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("area-conflict")));
+				return;
+			}
+
 		}
 		
 		if (isNameExist(areaName)) {
 			player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("same-name")));
 			return;
 		}
-		
-		// establish the area
-		area.getConfig().set(path + ".starting-point", one);
-		area.getConfig().set(path + ".ending-point", two);
-		area.saveConfig();
+
+		fishingArea.write(areaName);
+
+		// successful message
 		player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("successful-create").replaceAll("%area_name%", areaName)));
-	}
-	
-	private boolean isAreaConflict(Selection sel) {
-		BlockVector one = sel.getBlockOne();
-		BlockVector two = sel.getBlockTwo();
-		
-		if (area.getConfig().getConfigurationSection("selected-area") == null)
-			return false;
-		
-		for (String areaName : area.getConfig().getConfigurationSection("selected-area").getKeys(false)) {
-			
-			String path = "selected-area." + areaName + ".";
-			BlockVector ckOne = area.getConfig().getVector(path + "starting-point").toBlockVector();
-			BlockVector ckTwo = area.getConfig().getVector(path + "ending-point").toBlockVector();
-			
-			// check x
-			if (one.getBlockX() > ckOne.getBlockX()) {
-				BlockVector tmp = one;
-				one = ckOne;
-				ckOne = tmp;
-				
-				tmp = two;
-				two = ckTwo;
-				ckTwo = tmp;
-			}
-			if (two.getBlockX() < ckOne.getBlockX()) {
-				continue;
-			}
-			
-			// check y
-			if (one.getBlockY() > ckOne.getBlockY()) {
-				BlockVector tmp = one;
-				one = ckOne;
-				ckOne = tmp;
-				
-				tmp = two;
-				two = ckTwo;
-				ckTwo = tmp;
-			}
-			if (two.getBlockY() < ckOne.getBlockY()) {
-				continue;
-			}
-			
-			// check z
-			if (one.getBlockZ() > ckOne.getBlockZ()) {
-				BlockVector tmp = one;
-				one = ckOne;
-				ckOne = tmp;
-				
-				tmp = two;
-				two = ckTwo;
-				ckTwo = tmp;
-			}
-			if (two.getBlockZ() < ckOne.getBlockZ()) {
-				continue;
-			}
-			
-			return true;
-		}
-		
-		return false;
 	}
 
 }

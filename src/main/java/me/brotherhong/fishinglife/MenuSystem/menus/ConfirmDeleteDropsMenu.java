@@ -21,10 +21,10 @@ public class ConfirmDeleteDropsMenu extends ChestMenu {
 	private String areaName;
 	private int targetSlot;
 
-	public ConfirmDeleteDropsMenu(FishingLife plugin, PlayerMenuUtility playerMenuUtility, String areaName, int targetSlot) {
-		super(plugin, playerMenuUtility);
-		this.areaName = areaName;
-		this.targetSlot = targetSlot;
+	public ConfirmDeleteDropsMenu(PlayerMenuUtility playerMenuUtility) {
+		super(playerMenuUtility);
+		this.areaName = playerMenuUtility.getTargetAreaName();
+		this.targetSlot = playerMenuUtility.getTargetSlots();
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class ConfirmDeleteDropsMenu extends ChestMenu {
 		}
 
 		FishingLife.getPlayerMenuUtility(player).setTargetAreaName(areaName);
-		new EditDropsMenu(plugin, playerMenuUtility).open();
+		new EditDropsMenu(playerMenuUtility).open();
 	}
 
 	@Override

@@ -10,10 +10,6 @@ import me.brotherhong.fishinglife.Commands.SubCommand;
 
 public class ListFishingAreaCommand extends SubCommand {
 
-	public ListFishingAreaCommand(FishingLife plugin) {
-		super(plugin);
-	}
-
 	@Override
 	public String getName() {
 		return "list";

@@ -9,10 +9,6 @@ import me.brotherhong.fishinglife.MenuSystem.menus.ShowDropsMenu;
 
 public class ShowDropsCommand extends SubCommand {
 
-	public ShowDropsCommand(FishingLife plugin) {
-		super(plugin);
-	}
-
 	@Override
 	public String getName() {
 		return "show";
@@ -43,8 +39,10 @@ public class ShowDropsCommand extends SubCommand {
 			player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("not-found")));
 			return;
 		}
-		
-		new ShowDropsMenu(plugin, FishingLife.getPlayerMenuUtility(player), areaName).open();
+
+		// open menu
+		FishingLife.getPlayerMenuUtility(player).setTargetAreaName(areaName);
+		new ShowDropsMenu(FishingLife.getPlayerMenuUtility(player)).open();
 	}
 	
 }

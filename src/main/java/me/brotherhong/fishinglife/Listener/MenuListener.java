@@ -12,8 +12,8 @@ public class MenuListener implements Listener {
 
 	FishingLife plugin;
 
-	public MenuListener(FishingLife plugin) {
-		this.plugin = plugin;
+	public MenuListener() {
+		this.plugin = FishingLife.getPlugin();
 	}
 
 	@EventHandler

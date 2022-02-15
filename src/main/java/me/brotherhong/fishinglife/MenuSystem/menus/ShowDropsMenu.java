@@ -19,9 +19,9 @@ public class ShowDropsMenu extends ChestMenu {
 	
 	private String areaName;
 	
-	public ShowDropsMenu(FishingLife plugin, PlayerMenuUtility playerMenuUtility, String areaName) {
-		super(plugin, playerMenuUtility);
-		this.areaName = areaName;
+	public ShowDropsMenu(PlayerMenuUtility playerMenuUtility) {
+		super(playerMenuUtility);
+		this.areaName = playerMenuUtility.getTargetAreaName();
 	}
 
 	@Override

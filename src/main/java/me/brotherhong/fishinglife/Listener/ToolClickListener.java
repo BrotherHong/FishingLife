@@ -16,9 +16,9 @@ public class ToolClickListener implements Listener {
 	private FishingLife plugin;
 	private Material tool;
 	
-	public ToolClickListener(FishingLife plugin) {
-		this.plugin = plugin;
-		this.tool = Material.getMaterial(this.plugin.getConfigConfig().getConfig().getString("selection-tool"));
+	public ToolClickListener() {
+		this.plugin = FishingLife.getPlugin();
+		this.tool = Material.getMaterial(plugin.getConfigConfig().getConfig().getString("selection-tool"));
 	}
 	
 	@EventHandler

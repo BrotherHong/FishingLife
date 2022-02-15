@@ -26,8 +26,8 @@ public class FishCaughtListener implements Listener {
 	private ConfigManager area;
 	private ConfigManager lang;
 	
-	public FishCaughtListener(FishingLife plugin) {
-		this.plugin = plugin;
+	public FishCaughtListener() {
+		this.plugin = FishingLife.getPlugin();
 		config = plugin.getConfigConfig();
 		area = plugin.getAreaConfig();
 		lang = plugin.getLangConfig();

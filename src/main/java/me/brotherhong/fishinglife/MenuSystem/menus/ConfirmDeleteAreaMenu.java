@@ -16,8 +16,8 @@ public class ConfirmDeleteAreaMenu extends ChestMenu {
 	
 	String areaName;
 
-	public ConfirmDeleteAreaMenu(FishingLife plugin, PlayerMenuUtility playerMenuUtility) {
-		super(plugin, playerMenuUtility);
+	public ConfirmDeleteAreaMenu(PlayerMenuUtility playerMenuUtility) {
+		super(playerMenuUtility);
 		this.areaName = playerMenuUtility.getTargetAreaName();
 	}
 	

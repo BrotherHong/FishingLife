@@ -22,8 +22,8 @@ public class EditDropsMenu extends ChestMenu {
 
 	private String areaName;
 
-	public EditDropsMenu(FishingLife plugin, PlayerMenuUtility playerMenuUtility) {
-		super(plugin, playerMenuUtility);
+	public EditDropsMenu(PlayerMenuUtility playerMenuUtility) {
+		super(playerMenuUtility);
 		this.areaName = playerMenuUtility.getTargetAreaName();
 	}
 
@@ -50,7 +50,10 @@ public class EditDropsMenu extends ChestMenu {
 
 		if (clickType == ClickType.RIGHT) { // delete
 
-			new ConfirmDeleteDropsMenu(plugin, FishingLife.getPlayerMenuUtility(player), areaName, targetSlot).open();
+			// open confirm menu
+			playerMenuUtility.setTargetAreaName(areaName);
+			playerMenuUtility.setTargetSlots(targetSlot);
+			new ConfirmDeleteDropsMenu(FishingLife.getPlayerMenuUtility(player)).open();
 
 		} else if (clickType == ClickType.LEFT) { // modify weight
 

@@ -9,10 +9,6 @@ import me.brotherhong.fishinglife.MenuSystem.menus.EditDropsMenu;
 
 public class EditFishingDropsCommand extends SubCommand {
 
-	public EditFishingDropsCommand(FishingLife plugin) {
-		super(plugin);
-	}
-
 	@Override
 	public String getName() {
 		return "edit";
@@ -45,7 +41,7 @@ public class EditFishingDropsCommand extends SubCommand {
 		}
 
 		FishingLife.getPlayerMenuUtility(player).setTargetAreaName(areaName);
-		new EditDropsMenu(plugin, FishingLife.getPlayerMenuUtility(player)).open();
+		new EditDropsMenu(FishingLife.getPlayerMenuUtility(player)).open();
 	}
 
 }

@@ -31,19 +31,19 @@ public class CommandManager implements TabExecutor {
 	private List<String> cmdNames;
 	private List<String> areaNames;
 	
-	public CommandManager(FishingLife plugin) {
-		this.plugin = plugin;
+	public CommandManager() {
+		this.plugin = FishingLife.getPlugin();
 		lang = plugin.getLangConfig();
 		area = plugin.getAreaConfig();
-		subCommands.add(new ToolCommand(this.plugin));
-		subCommands.add(new CreateFishingAreaCommand(plugin));
-		subCommands.add(new DeleteFishingAreaCommand(plugin));
-		subCommands.add(new ListFishingAreaCommand(plugin));
-		subCommands.add(new AddFishingDropsCommand(plugin));
-		subCommands.add(new EditFishingDropsCommand(plugin));
-		subCommands.add(new ShowDropsCommand(plugin));
-		subCommands.add(new HelpCommand(plugin));
-		subCommands.add(new ReloadCommand(plugin));
+		subCommands.add(new ToolCommand());
+		subCommands.add(new CreateFishingAreaCommand());
+		subCommands.add(new DeleteFishingAreaCommand());
+		subCommands.add(new ListFishingAreaCommand());
+		subCommands.add(new AddFishingDropsCommand());
+		subCommands.add(new EditFishingDropsCommand());
+		subCommands.add(new ShowDropsCommand());
+		subCommands.add(new HelpCommand());
+		subCommands.add(new ReloadCommand());
 		
 		subCommands.sort((c1, c2) -> c1.getName().compareTo(c2.getName()));
 	}

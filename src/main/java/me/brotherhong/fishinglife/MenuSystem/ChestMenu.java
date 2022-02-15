@@ -5,8 +5,8 @@ import org.bukkit.Bukkit;
 
 public abstract class ChestMenu extends Menu {
 
-    public ChestMenu(FishingLife plugin, PlayerMenuUtility playerMenuUtility) {
-        super(plugin, playerMenuUtility);
+    public ChestMenu(PlayerMenuUtility playerMenuUtility) {
+        super(playerMenuUtility);
     }
 
     public void open() {

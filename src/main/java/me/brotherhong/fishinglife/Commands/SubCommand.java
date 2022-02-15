@@ -14,8 +14,8 @@ public abstract class SubCommand {
 	protected ConfigManager lang;
 	protected ConfigManager area;
 	
-	public SubCommand(FishingLife plugin) {
-		this.plugin = plugin;
+	public SubCommand() {
+		this.plugin = FishingLife.getPlugin();
 		config = plugin.getConfigConfig();
 		lang = plugin.getLangConfig();
 		area = plugin.getAreaConfig();

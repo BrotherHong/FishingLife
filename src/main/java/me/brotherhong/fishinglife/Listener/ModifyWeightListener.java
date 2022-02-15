@@ -20,8 +20,8 @@ public class ModifyWeightListener implements Listener {
 
     public static List<Player> waiting = new ArrayList<>();
 
-    public ModifyWeightListener(FishingLife plugin) {
-        this.plugin = plugin;
+    public ModifyWeightListener() {
+        this.plugin = FishingLife.getPlugin();
     }
 
     @EventHandler
@@ -63,7 +63,7 @@ public class ModifyWeightListener implements Listener {
             plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
                 @Override
                 public void run() {
-                    new EditDropsMenu(plugin, FishingLife.getPlayerMenuUtility(player)).open();
+                    new EditDropsMenu(FishingLife.getPlayerMenuUtility(player)).open();
                 }
             });
         }

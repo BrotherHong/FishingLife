@@ -9,10 +9,6 @@ import me.brotherhong.fishinglife.MenuSystem.menus.ConfirmDeleteAreaMenu;
 
 public class DeleteFishingAreaCommand extends SubCommand {
 
-	public DeleteFishingAreaCommand(FishingLife plugin) {
-		super(plugin);
-	}
-
 	@Override
 	public String getName() {
 		return "delete";
@@ -45,7 +41,7 @@ public class DeleteFishingAreaCommand extends SubCommand {
 		
 		// open confirm menu
 		FishingLife.getPlayerMenuUtility(player).setTargetAreaName(areaName);
-		new ConfirmDeleteAreaMenu(plugin, FishingLife.getPlayerMenuUtility(player)).open();
+		new ConfirmDeleteAreaMenu(FishingLife.getPlayerMenuUtility(player)).open();
 	}
 	
 }

@@ -9,11 +9,6 @@ import me.brotherhong.fishinglife.Commands.SubCommand;
 
 public class HelpCommand extends SubCommand {
 
-	public HelpCommand(FishingLife plugin) {
-		super(plugin);
-		// TODO Auto-generated constructor stub
-	}
-
 	@Override
 	public String getName() {
 		return "help";

@@ -18,8 +18,8 @@ public abstract class Menu implements InventoryHolder {
 	protected ConfigManager lang;
 	protected ConfigManager area;
 	
-	public Menu(FishingLife plugin, PlayerMenuUtility playerMenuUtility) {
-		this.plugin = plugin;
+	public Menu(PlayerMenuUtility playerMenuUtility) {
+		this.plugin = FishingLife.getPlugin();
 		this.playerMenuUtility = playerMenuUtility;
 		
 		config = plugin.getConfigConfig();

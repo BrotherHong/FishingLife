@@ -11,11 +11,6 @@ import me.brotherhong.fishinglife.Commands.SubCommand;
 
 public class ReloadCommand extends SubCommand {
 
-	public ReloadCommand(FishingLife plugin) {
-		super(plugin);
-		// TODO Auto-generated constructor stub
-	}
-
 	@Override
 	public String getName() {
 		return "reload";
