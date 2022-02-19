@@ -3,7 +3,7 @@ package me.brotherhong.fishinglife.MenuSystem.menus;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.brotherhong.fishinglife.MenuSystem.ChestMenu;
+import me.brotherhong.fishinglife.Msgs;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -16,7 +16,7 @@ import me.brotherhong.fishinglife.MenuSystem.Menu;
 import me.brotherhong.fishinglife.MenuSystem.PlayerMenuUtility;
 import me.brotherhong.fishinglife.MyObject.FishingDrop;
 
-public class ConfirmDeleteDropsMenu extends ChestMenu {
+public class ConfirmDeleteDropsMenu extends Menu {
 	
 	private String areaName;
 	private int targetSlot;
@@ -50,11 +50,10 @@ public class ConfirmDeleteDropsMenu extends ChestMenu {
 				
 				area.getConfig().set(path, dropItems);
 				area.saveConfig();
-				
-				player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("successful-delete")));
+				player.sendMessage(Msgs.SUCCESS_DELETE);
 				break;
 			case RED_WOOL:
-				player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("cancel-delete")));
+				player.sendMessage(Msgs.CANCEL_DELETE);
 				break;
 		}
 

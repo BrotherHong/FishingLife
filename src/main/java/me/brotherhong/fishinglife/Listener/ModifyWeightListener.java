@@ -5,6 +5,7 @@ import java.util.List;
 
 import me.brotherhong.fishinglife.MenuSystem.Menu;
 import me.brotherhong.fishinglife.MenuSystem.menus.EditDropsMenu;
+import me.brotherhong.fishinglife.Msgs;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -49,15 +50,15 @@ public class ModifyWeightListener implements Listener {
                 oldWeight = dropItems.get(slot).getWeight();
                 dropItems.get(slot).setWeight(newWeight);
 
-                player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', plugin.getLangConfig().getConfig().getString("new-weight-set")));
+                player.sendMessage(Msgs.NEW_WEIGHT_SET);
 
                 plugin.getAreaConfig().getConfig().set(path, dropItems);
                 plugin.getAreaConfig().saveConfig();
 
             } else if (input.equals("-")) {
-                player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', plugin.getLangConfig().getConfig().getString("cancel-modify")));
+                player.sendMessage(Msgs.CANCEL_MODIFY);
             } else {
-                player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', plugin.getLangConfig().getConfig().getString("only-integer")));
+                player.sendMessage(Msgs.ONLY_INTEGER);
             }
 
             plugin.getServer().getScheduler().runTask(plugin, new Runnable() {

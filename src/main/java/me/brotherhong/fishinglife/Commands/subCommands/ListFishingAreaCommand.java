@@ -2,6 +2,7 @@ package me.brotherhong.fishinglife.Commands.subCommands;
 
 import java.util.Set;
 
+import me.brotherhong.fishinglife.Msgs;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -32,8 +33,8 @@ public class ListFishingAreaCommand extends SubCommand {
 			return;
 		
 		Set<String> names = area.getConfig().getConfigurationSection("selected-area").getKeys(false);
-		
-		player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("list-area").replaceAll("%area_amount%", Integer.toString(names.size()))));
+
+		player.sendMessage(Msgs.LIST_AREA.replaceAll("%area_amount%", Integer.toString(names.size())));
 		
 		for (String areaName : names) {
 			

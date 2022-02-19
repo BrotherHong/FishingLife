@@ -1,5 +1,6 @@
 package me.brotherhong.fishinglife.Commands.subCommands;
 
+import me.brotherhong.fishinglife.Msgs;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -30,7 +31,7 @@ public class ToolCommand extends SubCommand {
 		
 		ItemStack tool = new ItemStack(Material.getMaterial(config.getConfig().getString("selection-tool")));
 		player.getInventory().addItem(tool);
-		player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("selection-tool")));
+		player.sendMessage(Msgs.SELECTION_TOOL);
 		
 	}
 	

@@ -1,6 +1,6 @@
 package me.brotherhong.fishinglife.MenuSystem.menus;
 
-import me.brotherhong.fishinglife.MenuSystem.ChestMenu;
+import me.brotherhong.fishinglife.Msgs;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -8,11 +8,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import me.brotherhong.fishinglife.FishingLife;
 import me.brotherhong.fishinglife.MenuSystem.Menu;
 import me.brotherhong.fishinglife.MenuSystem.PlayerMenuUtility;
 
-public class ConfirmDeleteAreaMenu extends ChestMenu {
+public class ConfirmDeleteAreaMenu extends Menu {
 	
 	String areaName;
 
@@ -41,10 +40,10 @@ public class ConfirmDeleteAreaMenu extends ChestMenu {
 			case GREEN_WOOL:
 				area.getConfig().set(path, null);
 				area.saveConfig();
-				player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("successful-delete")));
+				player.sendMessage(Msgs.SUCCESS_DELETE);
 				break;
 			case RED_WOOL:
-				player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("cancel-delete")));
+				player.sendMessage(Msgs.CANCEL_DELETE);
 				break;
 		}
 		player.closeInventory();

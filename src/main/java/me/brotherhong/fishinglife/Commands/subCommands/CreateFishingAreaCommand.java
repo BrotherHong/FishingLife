@@ -1,5 +1,6 @@
 package me.brotherhong.fishinglife.Commands.subCommands;
 
+import me.brotherhong.fishinglife.Msgs;
 import me.brotherhong.fishinglife.MyObject.FishingArea;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -39,35 +40,24 @@ public class CreateFishingAreaCommand extends SubCommand {
 		fishingArea.setSelection(FishingLife.getPlayerSelection(player));
 		
 		if (!fishingArea.getSelection().isReady()) {
-			player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("no-select")));
+			player.sendMessage(Msgs.NO_SELECT);
 			return;
 		}
 
-		FishingArea checkedArea = new FishingArea();
-		for (String name : area.getConfig().getConfigurationSection("selected-area").getKeys(false)) {
-
-			Selection checkedSelection = new Selection();
-			checkedSelection.setBlockOne(area.getConfig().getVector("selected-area." + name + ".starting-point").toBlockVector());
-			checkedSelection.setBlockTwo(area.getConfig().getVector("selected-area." + name + ".ending-point").toBlockVector());
-
-			checkedArea.setSelection(checkedSelection);
-
-			if (FishingArea.isConflict(fishingArea, checkedArea)) {
-				player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("area-conflict")));
-				return;
-			}
-
+		if (FishingArea.willConflict(fishingArea)) {
+			player.sendMessage(Msgs.AREA_CONFLICT);
+			return;
 		}
 		
 		if (isNameExist(areaName)) {
-			player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("same-name")));
+			player.sendMessage(Msgs.SAME_NAME);
 			return;
 		}
 
 		fishingArea.write(areaName);
 
 		// successful message
-		player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("successful-create").replaceAll("%area_name%", areaName)));
+		player.sendMessage(Msgs.SUCCESS_CREATE.replaceAll("%area_name%", areaName));
 	}
 
 }

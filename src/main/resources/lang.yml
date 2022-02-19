@@ -13,7 +13,6 @@ no-drops: "&c此區域沒有任何掉落物"
 same-drops: "&c已存在相同的掉落物"
 list-area: "&b目前存在 &f%area_amount% &b個釣魚區域"
 only-integer: "&c必須輸入正整數值"
-drop-overflow: "&c此釣魚區域的掉落物已滿!"
 no-permission: "&c你沒有權限這樣做"
 
 # 提示訊息
@@ -23,6 +22,8 @@ successful-delete: "&c成功刪除"
 successful-add: "&a成功新增掉落物"
 successful-create: "&a成功建立新的釣魚區域 &b%area_name%"
 fish-caught: "&a你釣到了 %fish% &bx %amount%"
+one-direction: "&c只能朝向一個方向擴展"
+successful-expand: "&a成功擴展釣魚區域"
 
 # 權重修改
 new-weight-request: "&a請輸入新的權重&f、&c輸入 - 取消"
@@ -33,3 +34,5 @@ weight-display: "&6權重: &f%weight%"
 chance-display: "&b機率: &f%chance%&b%"
 change-weight-hint: "&a左鍵修改權重"
 delete-hint: "&c右鍵刪除"
+first-page: "&c已經在第一頁了"
+last-page: "&c已經到最後一頁了"

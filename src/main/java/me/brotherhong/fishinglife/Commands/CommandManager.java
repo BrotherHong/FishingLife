@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import me.brotherhong.fishinglife.Commands.subCommands.*;
+import me.brotherhong.fishinglife.Msgs;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -11,29 +13,18 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 import me.brotherhong.fishinglife.FishingLife;
-import me.brotherhong.fishinglife.Commands.subCommands.AddFishingDropsCommand;
-import me.brotherhong.fishinglife.Commands.subCommands.CreateFishingAreaCommand;
-import me.brotherhong.fishinglife.Commands.subCommands.DeleteFishingAreaCommand;
-import me.brotherhong.fishinglife.Commands.subCommands.EditFishingDropsCommand;
-import me.brotherhong.fishinglife.Commands.subCommands.HelpCommand;
-import me.brotherhong.fishinglife.Commands.subCommands.ListFishingAreaCommand;
-import me.brotherhong.fishinglife.Commands.subCommands.ReloadCommand;
-import me.brotherhong.fishinglife.Commands.subCommands.ShowDropsCommand;
-import me.brotherhong.fishinglife.Commands.subCommands.ToolCommand;
 import me.brotherhong.fishinglife.Manager.ConfigManager;
 
 public class CommandManager implements TabExecutor {
 	
 	private static ArrayList<SubCommand> subCommands = new ArrayList<>();
 	private FishingLife plugin;
-	private ConfigManager lang;
 	private ConfigManager area;
 	private List<String> cmdNames;
 	private List<String> areaNames;
 	
 	public CommandManager() {
 		this.plugin = FishingLife.getPlugin();
-		lang = plugin.getLangConfig();
 		area = plugin.getAreaConfig();
 		subCommands.add(new ToolCommand());
 		subCommands.add(new CreateFishingAreaCommand());
@@ -57,7 +48,7 @@ public class CommandManager implements TabExecutor {
 			boolean found = false;
 			
 			if (!player.hasPermission("fishinglife.show")) {
-				player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("no-permission")));
+				player.sendMessage(Msgs.NO_PERMISSION);
 				return true;
 			}
 			
@@ -65,7 +56,7 @@ public class CommandManager implements TabExecutor {
 				for (int i = 0;i < getSubCommands().size();i++) {
 					if (args[0].equalsIgnoreCase(getSubCommands().get(i).getName())) {
 						if (!args[0].equalsIgnoreCase("show") && !player.hasPermission("fishinglife.op")) {
-							player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("no-permission")));
+							player.sendMessage(Msgs.NO_PERMISSION);
 							return true;
 						}
 						getSubCommands().get(i).perform(player, args);
@@ -74,7 +65,7 @@ public class CommandManager implements TabExecutor {
 					}
 				}
 				if (!found) {
-					player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("unknown-command")));
+					player.sendMessage(Msgs.UNKNOWN_COMMAND);
 				}
 			} else { // only /fl
 				// help command
@@ -98,7 +89,7 @@ public class CommandManager implements TabExecutor {
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
 		
-		cmdNames = ((List<SubCommand>)subCommands.clone()).stream().map(sc -> sc.getName()).collect(Collectors.toList());
+		cmdNames = ((List<SubCommand>)subCommands.clone()).stream().map(SubCommand::getName).collect(Collectors.toList());
 		
 		List<String> result = new ArrayList<>();
 		if (args.length == 1) {
@@ -112,10 +103,8 @@ public class CommandManager implements TabExecutor {
 			return result;
 		} else if (args.length == 2) {
 			
-			areaNames = area.getConfig().getConfigurationSection("selected-area")
-										.getKeys(false)
-										.stream()
-										.collect(Collectors.toList());
+			areaNames = new ArrayList<>(area.getConfig().getConfigurationSection("selected-area")
+					.getKeys(false));
 			
 			if (args[0].equalsIgnoreCase("additem")) {
 				result = getSimilar(args[1]);

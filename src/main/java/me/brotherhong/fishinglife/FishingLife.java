@@ -26,7 +26,6 @@ public class FishingLife extends JavaPlugin {
 	private static final HashMap<Player, Selection> playerSelectionMap = new HashMap<>();
 	private static final HashMap<Player, PlayerMenuUtility> playerMenuUtilityMap = new HashMap<>();
 	private static String prefix;
-	private static int maxLine;
 	private static FishingLife plugin;
 
 	static {
@@ -48,7 +47,6 @@ public class FishingLife extends JavaPlugin {
 		getCommand("fishinglife").setExecutor(new CommandManager());
 		
 		prefix = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(lang.getConfig().getString("prefix")));
-		maxLine = config.getConfig().getInt("size");
 	}
 
 	@Override
@@ -58,10 +56,6 @@ public class FishingLife extends JavaPlugin {
 
 	public static String getPrefix() {
 		return prefix;
-	}
-
-	public static int getMaxSize() {
-		return maxLine * 9;
 	}
 	
 	public static Selection getPlayerSelection(Player player) {

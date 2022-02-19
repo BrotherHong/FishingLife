@@ -3,14 +3,19 @@ package me.brotherhong.fishinglife.MyObject;
 import me.brotherhong.fishinglife.FishingLife;
 import me.brotherhong.fishinglife.Manager.ConfigManager;
 import org.bukkit.entity.Fish;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockVector;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FishingArea {
 
     private FishingLife plugin;
-    private ConfigManager area;
+    private static ConfigManager area;
 
     private Selection selection = null;
+    private List<FishingDrop> drops = null;
 
     public FishingArea() {
         this.plugin = FishingLife.getPlugin();
@@ -26,58 +31,93 @@ public class FishingArea {
         return true;
     }
 
-    public static boolean isConflict(FishingArea area1, FishingArea area2) {
-        if (area1 == null || area2 == null) return false;
+    public static FishingArea getFishingArea(String name) {
+        FishingArea result = new FishingArea();
+        String path = "selected-area";
+        for (String n : area.getConfig().getConfigurationSection(path).getKeys(false)) {
+            if (n.equals(name)) {
+                Selection selection = new Selection();
+                selection.setBlockOne(area.getConfig().getVector(path + ".starting-point").toBlockVector());
+                selection.setBlockTwo(area.getConfig().getVector(path + ".ending-point").toBlockVector());
 
-        BlockVector one = area1.getSelection().getBlockOne();
-        BlockVector two = area1.getSelection().getBlockTwo();
-
-        BlockVector ckOne = area2.getSelection().getBlockOne();
-        BlockVector ckTwo = area2.getSelection().getBlockTwo();
-
-        // check x
-        if (one.getBlockX() > ckOne.getBlockX()) {
-            BlockVector tmp = one;
-            one = ckOne;
-            ckOne = tmp;
-
-            tmp = two;
-            two = ckTwo;
-            ckTwo = tmp;
+                result.setSelection(selection);
+                result.setDrops((List<FishingDrop>) area.getConfig().get(path + "." + name + ".drops"));
+                return result;
+            }
         }
-        if (two.getBlockX() < ckOne.getBlockX()) {
-            return false;
+        return null;
+    }
+
+    public static boolean willConflict(FishingArea a) {
+        return willConflict(a, "");
+    }
+
+    public static boolean willConflict(FishingArea a, String ban) {
+        if (a == null) return false;
+
+        BlockVector one = a.getSelection().getBlockOne();
+        BlockVector two = a.getSelection().getBlockTwo();
+
+        for (String name : area.getConfig().getConfigurationSection("selected-area").getKeys(false)) {
+            if (name.equals(ban)) continue;
+
+            BlockVector ckOne = area.getConfig().getVector("selected-area." + name + ".starting-point").toBlockVector();
+            BlockVector ckTwo = area.getConfig().getVector("selected-area." + name + ".ending-point").toBlockVector();
+
+            // check x
+            if (one.getBlockX() > ckOne.getBlockX()) {
+                BlockVector tmp = one;
+                one = ckOne;
+                ckOne = tmp;
+
+                tmp = two;
+                two = ckTwo;
+                ckTwo = tmp;
+            }
+            if (two.getBlockX() < ckOne.getBlockX()) {
+                continue;
+            }
+
+            // check y
+            if (one.getBlockY() > ckOne.getBlockY()) {
+                BlockVector tmp = one;
+                one = ckOne;
+                ckOne = tmp;
+
+                tmp = two;
+                two = ckTwo;
+                ckTwo = tmp;
+            }
+            if (two.getBlockY() < ckOne.getBlockY()) {
+                continue;
+            }
+
+            // check z
+            if (one.getBlockZ() > ckOne.getBlockZ()) {
+                BlockVector tmp = one;
+                one = ckOne;
+                ckOne = tmp;
+
+                tmp = two;
+                two = ckTwo;
+                ckTwo = tmp;
+            }
+            if (two.getBlockZ() < ckOne.getBlockZ()) {
+                continue;
+            }
+
+            return true;
         }
 
-        // check y
-        if (one.getBlockY() > ckOne.getBlockY()) {
-            BlockVector tmp = one;
-            one = ckOne;
-            ckOne = tmp;
+        return false;
+    }
 
-            tmp = two;
-            two = ckTwo;
-            ckTwo = tmp;
-        }
-        if (two.getBlockY() < ckOne.getBlockY()) {
-            return false;
-        }
+    public List<FishingDrop> getDrops() {
+        return drops;
+    }
 
-        // check z
-        if (one.getBlockZ() > ckOne.getBlockZ()) {
-            BlockVector tmp = one;
-            one = ckOne;
-            ckOne = tmp;
-
-            tmp = two;
-            two = ckTwo;
-            ckTwo = tmp;
-        }
-        if (two.getBlockZ() < ckOne.getBlockZ()) {
-            return false;
-        }
-
-        return true;
+    public void setDrops(List<FishingDrop> drops) {
+        this.drops = drops;
     }
 
     public Selection getSelection() {

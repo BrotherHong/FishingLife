@@ -35,7 +35,7 @@ public class DeleteFishingAreaCommand extends SubCommand {
 		String areaName = args[1];
 		
 		if (!isNameExist(areaName)) {
-			player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("not-found")));
+			sendAreaNotFound(player);
 			return;
 		}
 		

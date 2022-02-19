@@ -75,7 +75,6 @@ public class ToolClickListener implements Listener {
 				world.spawnParticle(particle, start.clone().add(new Vector(0.0, vector.getY(), z)), count);
 				world.spawnParticle(particle, start.clone().add(new Vector(vector.getX(), vector.getY(), z)), count);
 			}
-			player.sendMessage("Spawned particles");
 
 		}
 	}

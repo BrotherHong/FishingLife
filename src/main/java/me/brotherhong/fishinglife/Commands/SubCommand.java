@@ -1,5 +1,6 @@
 package me.brotherhong.fishinglife.Commands;
 
+import me.brotherhong.fishinglife.Msgs;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -29,8 +30,12 @@ public abstract class SubCommand {
 	
 	public abstract void perform(Player player, String[] args);
 	
-	protected void sendUsage(Player target) {
-		target.sendMessage(FishingLife.getPrefix() + ChatColor.RED + "Usage: " + getSyntax());
+	protected void sendUsage(Player player) {
+		player.sendMessage(FishingLife.getPrefix() + ChatColor.RED + "Usage: " + getSyntax());
+	}
+
+	protected void sendAreaNotFound(Player player) {
+		player.sendMessage(Msgs.AREA_NOT_FOUND);
 	}
 	
 	protected boolean isNameExist(String name) {

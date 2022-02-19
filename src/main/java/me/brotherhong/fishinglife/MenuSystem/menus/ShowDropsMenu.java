@@ -1,23 +1,25 @@
 package me.brotherhong.fishinglife.MenuSystem.menus;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
-import me.brotherhong.fishinglife.MenuSystem.ChestMenu;
+import me.brotherhong.fishinglife.MenuSystem.PaginatedMenu;
+import me.brotherhong.fishinglife.Msgs;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import me.brotherhong.fishinglife.FishingLife;
-import me.brotherhong.fishinglife.MenuSystem.Menu;
 import me.brotherhong.fishinglife.MenuSystem.PlayerMenuUtility;
 import me.brotherhong.fishinglife.MyObject.FishingDrop;
 
-public class ShowDropsMenu extends ChestMenu {
+public class ShowDropsMenu extends PaginatedMenu {
 	
 	private String areaName;
+	private List<FishingDrop> dropItems = null;
 	
 	public ShowDropsMenu(PlayerMenuUtility playerMenuUtility) {
 		super(playerMenuUtility);
@@ -31,24 +33,48 @@ public class ShowDropsMenu extends ChestMenu {
 
 	@Override
 	public int getSlots() {
-		return FishingLife.getMaxSize();
+		return 54;
 	}
 
 	@Override
 	public void handleMenu(InventoryClickEvent event) {
-		// null
+
+		ItemStack item = event.getCurrentItem();
+		if (item == null)
+			return;
+
+		Player player = (Player) event.getWhoClicked();
+
+		if (item.getType() == Material.ARROW) {
+			if (event.getSlot() == 45) {
+				if (page == 0) {
+					player.sendMessage(Msgs.FIRST_PAGE);
+				} else {
+					page = page - 1;
+					super.open();
+				}
+			} else if (event.getSlot() == 53) {
+				if ((index + 1) < dropItems.size()) {
+					page = page + 1;
+					super.open();
+				} else {
+					player.sendMessage(Msgs.LAST_PAGE);
+				}
+			}
+		}
+
 	}
 
 	@Override
 	public void setMenuItems() {
 		
 		String path = "selected-area." + areaName + ".drops";
-		List<FishingDrop> dropItems = (ArrayList<FishingDrop>) area.getConfig().getList(path);
+		dropItems = (ArrayList<FishingDrop>) area.getConfig().getList(path);
 		Player player = playerMenuUtility.getOwner();
 		
 		// check null
 		if (dropItems == null || dropItems.size() == 0) {
-			player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("no-drops")));
+			player.sendMessage(Msgs.NO_DROPS);
 			return;
 		}
 		
@@ -59,34 +85,54 @@ public class ShowDropsMenu extends ChestMenu {
 		for (FishingDrop fd : dropItems) {
 			totalWeight += fd.getWeight();
 		}
-		
-		for (FishingDrop fd : dropItems) {
-			
+
+		dropItems.sort(Comparator.comparingInt(FishingDrop::getWeight));
+
+		for (int i = 0;i < super.maxItemPerPage;i++) {
+			index = super.maxItemPerPage * page + i;
+			if (index >= dropItems.size()) break;
+
+			FishingDrop fd = dropItems.get(index);
+
 			ItemStack drop = fd.getItem().clone();
 			ItemMeta meta = drop.getItemMeta();
-			
-			// Bukkit.getServer().getLogger().log(Level.WARNING, drop.getType().toString());
-			
-			if (meta == null) {
-				// Bukkit.getServer().getLogger().log(Level.WARNING, "SHOW");
-				return;
-			}
-			
+
 			List<String> lore = meta.getLore();
 			int weight = fd.getWeight();
-			
+
 			if (lore == null) {
-				lore = new ArrayList<String>();
+				lore = new ArrayList<>();
 			}
-			
-			lore.add(ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("weight-display").replaceAll("%weight%", Integer.toString(weight))));
-			lore.add(ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("chance-display").replaceAll("%chance%", String.format("%.2f", (double)weight/totalWeight*100.0))));
+
+			lore.add(ChatColor.translateAlternateColorCodes('&', Msgs.WEIGHT_DISPLAY.replaceAll("%weight%", Integer.toString(weight))));
+			lore.add(ChatColor.translateAlternateColorCodes('&', Msgs.CHANCE_DISPLAY.replaceAll("%chance%", String.format("%.2f", (double)weight/totalWeight*100.0))));
 			meta.setLore(lore);
-			
+
 			drop.setItemMeta(meta);
-			
+
 			inventory.addItem(drop);
+
 		}
+
+		// current page
+		ItemStack cur = new ItemStack(Material.COMPASS, 1);
+		ItemMeta cur_meta = cur.getItemMeta();
+		cur_meta.setDisplayName(ChatColor.GREEN + "目前頁數: " + Integer.toString(page+1));
+		cur.setItemMeta(cur_meta);
+		inventory.setItem(49, cur);
+
+		// arrow
+		ItemStack back = new ItemStack(Material.ARROW, 1);
+		ItemMeta back_meta = back.getItemMeta();
+		back_meta.setDisplayName(ChatColor.GREEN + "上一頁");
+		back.setItemMeta(back_meta);
+		inventory.setItem(45, back);
+
+		ItemStack next = new ItemStack(Material.ARROW, 1);
+		ItemMeta next_meta = back.getItemMeta();
+		back_meta.setDisplayName(ChatColor.GREEN + "下一頁");
+		next.setItemMeta(next_meta);
+		inventory.setItem(53, next);
 		
 	}
 	

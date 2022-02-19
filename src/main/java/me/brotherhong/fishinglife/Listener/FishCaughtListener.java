@@ -3,6 +3,7 @@ package me.brotherhong.fishinglife.Listener;
 import java.util.ArrayList;
 import java.util.Random;
 
+import me.brotherhong.fishinglife.Msgs;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -58,7 +59,7 @@ public class FishCaughtListener implements Listener {
 			name = item.getName();
 		}
 		
-		player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("fish-caught").replaceAll("%fish%", name).replaceAll("%amount%", Integer.toString(item.getItemStack().getAmount()))));
+		player.sendMessage(Msgs.FISH_CAUGHT.replaceAll("%fish%", name).replaceAll("%amount%", Integer.toString(item.getItemStack().getAmount())));
 		
 	}
 	

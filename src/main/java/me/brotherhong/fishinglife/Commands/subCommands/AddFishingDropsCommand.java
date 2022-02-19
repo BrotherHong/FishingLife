@@ -3,6 +3,7 @@ package me.brotherhong.fishinglife.Commands.subCommands;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.brotherhong.fishinglife.Msgs;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -41,13 +42,13 @@ public class AddFishingDropsCommand extends SubCommand {
 		
 		// check if name exist
 		if (!isNameExist(areaName)) {
-			player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("not-found")));
+			sendAreaNotFound(player);
 			return;
 		}
 		
 		// check if input weight available
 		if (!args[2].matches("^[1-9]+[0-9]*$")) {
-			player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', plugin.getLangConfig().getConfig().getString("only-integer")));
+			player.sendMessage(Msgs.ONLY_INTEGER);
 			return;
 		}
 		int weight = Integer.parseInt(args[2]);
@@ -57,22 +58,16 @@ public class AddFishingDropsCommand extends SubCommand {
 			dropItems = new ArrayList<>();
 		}
 		
-		// check if drop overflow
-		if (dropItems.size() == FishingLife.getMaxSize()) {
-			player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("drop-overflow")));
-			return;
-		}
-		
 		// check if have item on hand
 		ItemStack target = player.getInventory().getItemInMainHand().clone();
 		if (target.getType().isAir()) {
-			player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("no-item")));
+			player.sendMessage(Msgs.NO_ITEM_IN_HAND);
 			return;
 		}
 		
-		// check if have same drop
+		// has same drop
 		if (hasSameDrop(areaName, target)) {
-			player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("same-drops")));
+			player.sendMessage(Msgs.SAME_DROPS);
 			return;
 		}
 		
@@ -84,8 +79,8 @@ public class AddFishingDropsCommand extends SubCommand {
 		
 		area.getConfig().set(path, dropItems);
 		area.saveConfig();
-		
-		player.sendMessage(FishingLife.getPrefix() + ChatColor.translateAlternateColorCodes('&', lang.getConfig().getString("successful-add")));
+
+		player.sendMessage(Msgs.SUCCESS_ADD);
 	}
 	
 	private boolean hasSameDrop(String areaName, ItemStack target) {
