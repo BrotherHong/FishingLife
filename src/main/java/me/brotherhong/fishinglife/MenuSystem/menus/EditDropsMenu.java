@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import me.brotherhong.fishinglife.Listener.ModifyWeightListener;
+import me.brotherhong.fishinglife.Listener.ChatInputListener;
 import me.brotherhong.fishinglife.MenuSystem.PaginatedMenu;
 import me.brotherhong.fishinglife.Msgs;
-import org.bukkit.Bukkit;
+import me.brotherhong.fishinglife.MyObject.FishingArea;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -81,13 +80,24 @@ public class EditDropsMenu extends PaginatedMenu {
 
 				player.closeInventory();
 
-				FishingLife.getPlayerMenuUtility(player).setTargetSlots(event.getSlot());
-				FishingLife.getPlayerMenuUtility(player).setTargetAreaName(areaName);
+				playerMenuUtility.setTargetSlots(event.getSlot());
+				playerMenuUtility.setTargetAreaName(areaName);
 
 				// modify
-				ModifyWeightListener.waiting.add(player);
+				ChatInputListener.waiting_chance.add(player);
 
-				player.sendMessage(Msgs.NEW_WEIGHT_REQUEST);
+				player.sendMessage(Msgs.NEW_CHANCE_REQUEST);
+
+			} else if (clickType == ClickType.MIDDLE) {
+
+				player.closeInventory();
+
+				playerMenuUtility.setTargetSlots(event.getSlot());
+				playerMenuUtility.setTargetAreaName(areaName);
+
+				ChatInputListener.waiting_amount.add(player);
+
+				player.sendMessage(Msgs.NEW_AMOUNT_REQUEST);
 
 			}
 		}
@@ -96,8 +106,7 @@ public class EditDropsMenu extends PaginatedMenu {
 	@Override
 	public void setMenuItems() {
 
-		String path = "selected-area." + areaName + ".drops";
-		dropItems = (ArrayList<FishingDrop>) area.getConfig().getList(path);
+		dropItems = FishingArea.getFishingArea(areaName).getDrops();
 		Player player = playerMenuUtility.getOwner();
 
 		// check null
@@ -106,13 +115,7 @@ public class EditDropsMenu extends PaginatedMenu {
 			return;
 		}
 
-		int totalWeight = 0;
-
-		for (FishingDrop fd : dropItems) {
-			totalWeight += fd.getWeight();
-		}
-
-		dropItems.sort(Comparator.comparingInt(FishingDrop::getWeight));
+		dropItems.sort(Comparator.comparingDouble(FishingDrop::getChance));
 
 		for (int i = 0;i < super.maxItemPerPage;i++) {
 			index = super.maxItemPerPage * page + i;
@@ -124,16 +127,16 @@ public class EditDropsMenu extends PaginatedMenu {
 			ItemMeta meta = drop.getItemMeta();
 
 			List<String> lore = meta.getLore();
-			int weight = fd.getWeight();
+			double chance= fd.getChance();
 
 			if (lore == null) {
 				lore = new ArrayList<String>();
 			}
 
-			lore.add(ChatColor.translateAlternateColorCodes('&', Msgs.WEIGHT_DISPLAY.replaceAll("%weight%", Integer.toString(weight))));
-			lore.add(ChatColor.translateAlternateColorCodes('&', Msgs.CHANCE_DISPLAY.replaceAll("%chance%", String.format("%.2f", (double) weight / totalWeight * 100.0))));
-			lore.add(ChatColor.translateAlternateColorCodes('&', Msgs.CHANGE_WEIGHT_HINT));
-			lore.add(ChatColor.translateAlternateColorCodes('&', Msgs.DELETE_HINT));
+			lore.add(Msgs.CHANCE_DISPLAY.replaceAll("%chance%", Double.toString(chance)));
+			lore.add(Msgs.CHANGE_CHANCE_HINT);
+			lore.add(Msgs.CHANGE_AMOUNT_HINT);
+			lore.add(Msgs.DELETE_HINT);
 			meta.setLore(lore);
 
 			drop.setItemMeta(meta);
@@ -156,8 +159,8 @@ public class EditDropsMenu extends PaginatedMenu {
 		inventory.setItem(45, back);
 
 		ItemStack next = new ItemStack(Material.ARROW, 1);
-		ItemMeta next_meta = back.getItemMeta();
-		back_meta.setDisplayName(ChatColor.GREEN + "下一頁");
+		ItemMeta next_meta = next.getItemMeta();
+		next_meta.setDisplayName(ChatColor.GREEN + "下一頁");
 		next.setItemMeta(next_meta);
 		inventory.setItem(53, next);
 

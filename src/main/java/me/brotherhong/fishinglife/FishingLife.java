@@ -3,7 +3,7 @@ package me.brotherhong.fishinglife;
 import java.util.HashMap;
 import java.util.Objects;
 
-import me.brotherhong.fishinglife.Listener.ModifyWeightListener;
+import me.brotherhong.fishinglife.Listener.ChatInputListener;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
@@ -27,6 +27,8 @@ public class FishingLife extends JavaPlugin {
 	private static final HashMap<Player, PlayerMenuUtility> playerMenuUtilityMap = new HashMap<>();
 	private static String prefix;
 	private static FishingLife plugin;
+	public static final String DOUBLE_POSITIVE = "^[1-9]\\d*\\.\\d*|0\\.\\d*[1-9]\\d*$";
+	public static final String INTEGER_POSITIVE = "^[1-9]+[0-9]*$";
 
 	static {
 		ConfigurationSerialization.registerClass(FishingDrop.class);
@@ -43,7 +45,7 @@ public class FishingLife extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new FishCaughtListener(), this);
 		getServer().getPluginManager().registerEvents(new ToolClickListener(), this);
 		getServer().getPluginManager().registerEvents(new MenuListener(), this);
-		getServer().getPluginManager().registerEvents(new ModifyWeightListener(), this);
+		getServer().getPluginManager().registerEvents(new ChatInputListener(), this);
 		getCommand("fishinglife").setExecutor(new CommandManager());
 		
 		prefix = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(lang.getConfig().getString("prefix")));

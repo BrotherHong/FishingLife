@@ -35,6 +35,7 @@ public class CommandManager implements TabExecutor {
 		subCommands.add(new ShowDropsCommand());
 		subCommands.add(new HelpCommand());
 		subCommands.add(new ReloadCommand());
+		subCommands.add(new ExpandAreaCommand());
 		
 		subCommands.sort((c1, c2) -> c1.getName().compareTo(c2.getName()));
 	}
@@ -116,11 +117,15 @@ public class CommandManager implements TabExecutor {
 				result = getSimilar(args[1]);
 			} else if (args[0].equalsIgnoreCase("show")) {
 				result = getSimilar(args[1]);
+			} else if (args[0].equalsIgnoreCase("expand")) {
+				result = getSimilar(args[1]);
 			}
 			return result;
 		} else if (args.length == 3) {
 			if (args[0].equalsIgnoreCase("additem")) {
-				result.add("<weight>");
+				result.add("<chance>");
+			} else if (args[0].equalsIgnoreCase("expand")) {
+				result.add("<number>");
 			}
 			return result;
 		}

@@ -14,6 +14,7 @@ public class FishingArea {
     private FishingLife plugin;
     private static ConfigManager area;
 
+    private String name = null;
     private Selection selection = null;
     private List<FishingDrop> drops = null;
 
@@ -33,19 +34,28 @@ public class FishingArea {
 
     public static FishingArea getFishingArea(String name) {
         FishingArea result = new FishingArea();
-        String path = "selected-area";
-        for (String n : area.getConfig().getConfigurationSection(path).getKeys(false)) {
-            if (n.equals(name)) {
+        result.setName(name);
+        String path = "selected-area." + name;
+        for (String n : area.getConfig().getConfigurationSection("selected-area").getKeys(false)) {
+            if (n.equalsIgnoreCase(name)) {
                 Selection selection = new Selection();
                 selection.setBlockOne(area.getConfig().getVector(path + ".starting-point").toBlockVector());
                 selection.setBlockTwo(area.getConfig().getVector(path + ".ending-point").toBlockVector());
 
                 result.setSelection(selection);
-                result.setDrops((List<FishingDrop>) area.getConfig().get(path + "." + name + ".drops"));
+                result.setDrops((List<FishingDrop>) area.getConfig().get(path + ".drops"));
                 return result;
             }
         }
         return null;
+    }
+
+    public void save() {
+        String path = "selected-area." + name;
+        area.getConfig().set(path + ".starting-point", selection.getBlockOne());
+        area.getConfig().set(path + ".ending-point", selection.getBlockTwo());
+        area.getConfig().set(path + ".drops", drops);
+        area.saveConfig();
     }
 
     public static boolean willConflict(FishingArea a) {
@@ -110,6 +120,14 @@ public class FishingArea {
         }
 
         return false;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<FishingDrop> getDrops() {

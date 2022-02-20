@@ -1,9 +1,12 @@
 package me.brotherhong.fishinglife.Listener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import me.brotherhong.fishinglife.Msgs;
+import me.brotherhong.fishinglife.MyObject.FishingArea;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,16 +25,12 @@ import me.brotherhong.fishinglife.MyObject.FishingDrop;
 public class FishCaughtListener implements Listener {
 	
 	private FishingLife plugin;
-	
-	private ConfigManager config;
+
 	private ConfigManager area;
-	private ConfigManager lang;
 	
 	public FishCaughtListener() {
 		this.plugin = FishingLife.getPlugin();
-		config = plugin.getConfigConfig();
 		area = plugin.getAreaConfig();
-		lang = plugin.getLangConfig();
 	}
 	
 	@EventHandler
@@ -65,32 +64,32 @@ public class FishCaughtListener implements Listener {
 	
 	private ItemStack getPrize(String areaName) {
 		
-		ArrayList<FishingDrop> drops = (ArrayList<FishingDrop>)area.getConfig().getList("selected-area." + areaName + ".drops");
+		List<FishingDrop> drops = FishingArea.getFishingArea(areaName).getDrops();
 		
 		if (drops == null || drops.isEmpty()) {
 			return new ItemStack(Material.COD, 1);
 		}
+
+		Collections.shuffle(drops);
 		
-		// weighted random from stack overflow
-		int totalWeight = 0;
+		// chance random from stack overflow
+		double totalChance = 0.0;
 		
 		for (FishingDrop fd : drops) {
-			totalWeight += fd.getWeight();
+			totalChance += fd.getChance();
 		}
 		
 		Random rand = new Random();
-		int rnd = rand.nextInt(totalWeight);
-		
-		// System.out.println(rnd);
+		double rnd = rand.nextDouble(totalChance);
 		
 		for (int i = 0;i < drops.size();i++) {
-			if (rnd < drops.get(i).getWeight()) {
+			if (rnd < drops.get(i).getChance()) {
 				return drops.get(i).getItem();
 			}
-			rnd -= drops.get(i).getWeight();
+			rnd -= drops.get(i).getChance();
 		}
 		
-		return null;
+		return new ItemStack(Material.COD, 1);
 	}
 	
 	private String inWhichFishingArea(Location loc) {

@@ -3,10 +3,15 @@ package me.brotherhong.fishinglife.Commands.subCommands;
 import java.util.Set;
 
 import me.brotherhong.fishinglife.Msgs;
-import org.bukkit.ChatColor;
+import me.brotherhong.fishinglife.MyObject.FishingArea;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Content;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.entity.Player;
 
-import me.brotherhong.fishinglife.FishingLife;
 import me.brotherhong.fishinglife.Commands.SubCommand;
 
 public class ListFishingAreaCommand extends SubCommand {
@@ -37,9 +42,12 @@ public class ListFishingAreaCommand extends SubCommand {
 		player.sendMessage(Msgs.LIST_AREA.replaceAll("%area_amount%", Integer.toString(names.size())));
 		
 		for (String areaName : names) {
-			
-			player.sendMessage(" - " + ChatColor.AQUA + areaName);
-			
+			FishingArea fishingArea = FishingArea.getFishingArea(areaName);
+
+			TextComponent text = new TextComponent(" - " + areaName);
+			text.setColor(ChatColor.GRAY);
+			text.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(ChatColor.AQUA + "(" + fishingArea.getSelection().getBlockOne().toString() + ")")));
+			player.spigot().sendMessage(text);
 		}
 		
 	}

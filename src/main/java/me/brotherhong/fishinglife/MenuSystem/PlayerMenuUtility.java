@@ -5,8 +5,8 @@ import org.bukkit.entity.Player;
 public class PlayerMenuUtility {
 	
 	private Player owner;
-	private int targetSlots;
-	private String targetAreaName;
+	private int targetSlots = 0;
+	private String targetAreaName = null;
 	
 	public PlayerMenuUtility(Player owner) {
 		this.owner = owner;

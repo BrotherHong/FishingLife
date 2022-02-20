@@ -9,13 +9,13 @@ import org.bukkit.inventory.ItemStack;
 public class FishingDrop implements ConfigurationSerializable {
 	
 	private ItemStack item;
-	private int weight;
+	private double chance;
 	
 	@Override
 	public Map<String, Object> serialize() {
 		Map<String, Object> serialized = new HashMap<>();
 		
-		serialized.put("weight", weight);
+		serialized.put("chance", chance);
 		serialized.put("item", item);
 		
 		return serialized;
@@ -24,7 +24,7 @@ public class FishingDrop implements ConfigurationSerializable {
 	public static FishingDrop deserialize(Map<String, Object> serialized) {
 		FishingDrop drop = new FishingDrop();
 		
-		drop.setWeight((Integer) serialized.get("weight"));
+		drop.setChance((Double) serialized.get("chance"));
 		drop.setItem((ItemStack) serialized.get("item"));
 		
 		return drop;
@@ -38,14 +38,13 @@ public class FishingDrop implements ConfigurationSerializable {
 		this.item = item;
 	}
 
-	public int getWeight() {
-		return weight;
+	public double getChance() {
+		return chance;
 	}
 
-	public void setWeight(int weight) {
-		this.weight = weight;
+	public void setChance(double chance) {
+		this.chance = chance;
 	}
-	
 }
 
 

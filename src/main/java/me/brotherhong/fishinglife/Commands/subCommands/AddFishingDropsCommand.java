@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.brotherhong.fishinglife.Msgs;
+import me.brotherhong.fishinglife.MyObject.FishingArea;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -47,13 +48,14 @@ public class AddFishingDropsCommand extends SubCommand {
 		}
 		
 		// check if input weight available
-		if (!args[2].matches("^[1-9]+[0-9]*$")) {
-			player.sendMessage(Msgs.ONLY_INTEGER);
+		if (!args[2].matches(FishingLife.DOUBLE_POSITIVE)) {
+			player.sendMessage(Msgs.ONLY_FLOAT);
 			return;
 		}
-		int weight = Integer.parseInt(args[2]);
-		
-		List<FishingDrop> dropItems = (ArrayList<FishingDrop>) area.getConfig().getList(path);
+		double chance = Double.parseDouble(args[2]);
+
+		FishingArea fishingArea = FishingArea.getFishingArea(areaName);
+		List<FishingDrop> dropItems = fishingArea.getDrops();
 		if (dropItems == null) {
 			dropItems = new ArrayList<>();
 		}
@@ -73,12 +75,12 @@ public class AddFishingDropsCommand extends SubCommand {
 		
 		FishingDrop newDrop = new FishingDrop();
 		newDrop.setItem(target);
-		newDrop.setWeight(weight);
+		newDrop.setChance(chance);
 		
 		dropItems.add(newDrop);
-		
-		area.getConfig().set(path, dropItems);
-		area.saveConfig();
+		fishingArea.setDrops(dropItems);
+
+		fishingArea.save();
 
 		player.sendMessage(Msgs.SUCCESS_ADD);
 	}
