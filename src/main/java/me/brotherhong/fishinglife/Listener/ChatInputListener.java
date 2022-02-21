@@ -29,8 +29,11 @@ public class ChatInputListener implements Listener {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
-
         Player player = event.getPlayer();
+
+        if (!waiting_amount.contains(player) && !waiting_chance.contains(player))
+            return;
+
         PlayerMenuUtility playerMenuUtility = FishingLife.getPlayerMenuUtility(player);
         int slot = playerMenuUtility.getTargetSlots();
         String areaName = playerMenuUtility.getTargetAreaName();

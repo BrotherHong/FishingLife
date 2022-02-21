@@ -36,6 +36,7 @@ public class CommandManager implements TabExecutor {
 		subCommands.add(new HelpCommand());
 		subCommands.add(new ReloadCommand());
 		subCommands.add(new ExpandAreaCommand());
+		subCommands.add(new BoardDisplayCommand());
 		
 		subCommands.sort((c1, c2) -> c1.getName().compareTo(c2.getName()));
 	}
@@ -118,6 +119,8 @@ public class CommandManager implements TabExecutor {
 			} else if (args[0].equalsIgnoreCase("show")) {
 				result = getSimilar(args[1]);
 			} else if (args[0].equalsIgnoreCase("expand")) {
+				result = getSimilar(args[1]);
+			} else if (args[0].equalsIgnoreCase("board")) {
 				result = getSimilar(args[1]);
 			}
 			return result;
