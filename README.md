@@ -1,2 +1,2 @@
 # FishingLife
-A Simple Minecraft plugin.
+A simple Minecraft plugin that makes fishing more interesting.
